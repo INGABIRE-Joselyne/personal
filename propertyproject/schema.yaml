@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: 'Property project '
+  version: 1.0.0
+  description: used to manage the properties
+paths:
+  /api/Ternant:
+    get:
+      operationId: api_Ternant_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: api_Ternant_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/user:
+    get:
+      operationId: api_user_retrieve
+      description: retrieve all user or create a user
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userserializers'
+          description: ''
+    post:
+      operationId: api_user_create
+      description: retrieve all user or create a user
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Userserializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Userserializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Userserializers'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userserializers'
+          description: ''
+components:
+  schemas:
+    Userserializers:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - id
+      - password
+      - username
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
